@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nomico.dao.DepartmentMapper">
+	<!-- <cache size="1024000" readOnly="false" eviction="FIFO" /> -->
+	<resultMap id="BaseResultMap" type="com.nomico.model.Department">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="deptname" property="deptname" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="createip" property="createip" jdbcType="VARCHAR" />
+		<result column="overtime" property="overtime" jdbcType="TIMESTAMP" />
+		<result column="overip" property="overip" jdbcType="VARCHAR" />
+		<result column="a1" property="a1" jdbcType="VARCHAR" />
+		<result column="a2" property="a2" jdbcType="VARCHAR" />
+		<result column="b1" property="b1" jdbcType="INTEGER" />
+		<result column="c1" property="c1" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, deptname, remark, state, createtime, createip, overtime, overip, a1,
+		a2, b1,
+		c1
+	</sql>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from department
+		<where>
+			<if test="v.state!=null and v.state!=0">
+				state=#{v.state}
+			</if>
+			<if test="v.deptname != null and v.deptname !=''">
+				and deptname like #{v.deptname,jdbcType=VARCHAR}
+			</if>
+			<if test="v.startTime != null and v.startTime !='' and v.endTime != null and v.endTime !='' ">
+			and	createtime between #{v.startTime} and #{v.endTime}
+			</if>
+		</where>
+		order by createtime desc limit #{v.start},#{v.length}
+	</select>
+	
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) from department
+		<where>
+			<if test="v.state!=null and v.state!=0">
+				state=#{v.state}
+			</if>
+			<if test="v.deptname != null and v.deptname !=''">
+				and deptname like #{v.deptname,jdbcType=VARCHAR}
+			</if>
+			<if test="v.startTime != null and v.startTime !='' and v.endTime != null and v.endTime !='' ">
+			and	createtime between #{v.startTime} and #{v.endTime}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectAll1" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from department
+		order by createtime desc
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from department
+		where id = #{id,jdbcType=VARCHAR} and state=1
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from department
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.nomico.model.Department">
+		insert into department (id, deptname, remark,
+		state, createtime, createip,
+		overtime, overip, a1,
+		a2, b1, c1)
+		values (#{id,jdbcType=VARCHAR}, #{deptname,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{state,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{createip,jdbcType=VARCHAR},
+		#{overtime,jdbcType=TIMESTAMP}, #{overip,jdbcType=VARCHAR},
+		#{a1,jdbcType=VARCHAR},
+		#{a2,jdbcType=VARCHAR}, #{b1,jdbcType=INTEGER}, #{c1,jdbcType=TIMESTAMP})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.nomico.model.Department">
+		insert into department
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="deptname != null">
+				deptname,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="createip != null">
+				createip,
+			</if>
+			<if test="overtime != null">
+				overtime,
+			</if>
+			<if test="overip != null">
+				overip,
+			</if>
+			<if test="a1 != null">
+				a1,
+			</if>
+			<if test="a2 != null">
+				a2,
+			</if>
+			<if test="b1 != null">
+				b1,
+			</if>
+			<if test="c1 != null">
+				c1,
+			</if>
+		</trim>
+
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="deptname != null">
+				#{deptname,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createip != null">
+				#{createip,jdbcType=VARCHAR},
+			</if>
+			<if test="overtime != null">
+				#{overtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="overip != null">
+				#{overip,jdbcType=VARCHAR},
+			</if>
+			<if test="a1 != null">
+				#{a1,jdbcType=VARCHAR},
+			</if>
+			<if test="a2 != null">
+				#{a2,jdbcType=VARCHAR},
+			</if>
+			<if test="b1 != null">
+				#{b1,jdbcType=INTEGER},
+			</if>
+			<if test="c1 != null">
+				#{c1,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.nomico.model.Department">
+		update department
+		<set>
+			<if test="deptname != null">
+				deptname = #{deptname,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createip != null">
+				createip = #{createip,jdbcType=VARCHAR},
+			</if>
+			<if test="overtime != null">
+				overtime = #{overtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="overip != null">
+				overip = #{overip,jdbcType=VARCHAR},
+			</if>
+			<if test="a1 != null">
+				a1 = #{a1,jdbcType=VARCHAR},
+			</if>
+			<if test="a2 != null">
+				a2 = #{a2,jdbcType=VARCHAR},
+			</if>
+			<if test="b1 != null">
+				b1 = #{b1,jdbcType=INTEGER},
+			</if>
+			<if test="c1 != null">
+				c1 = #{c1,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.nomico.model.Department">
+		update department
+		set deptname = #{deptname,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR},
+		state = #{state,jdbcType=INTEGER},
+		createtime = #{createtime,jdbcType=TIMESTAMP},
+		createip = #{createip,jdbcType=VARCHAR},
+		overtime = #{overtime,jdbcType=TIMESTAMP},
+		overip = #{overip,jdbcType=VARCHAR},
+		a1 = #{a1,jdbcType=VARCHAR},
+		a2 = #{a2,jdbcType=VARCHAR},
+		b1 = #{b1,jdbcType=INTEGER},
+		c1 = #{c1,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

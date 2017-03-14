@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nomico.dao.EquipmentMapper" >
+  <resultMap id="BaseResultMap" type="com.nomico.model.Equipment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="equipmentnameid" property="equipmentnameid" jdbcType="VARCHAR" />
+    <result column="ppxh" property="ppxh" jdbcType="VARCHAR" />
+    <result column="ccbh" property="ccbh" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="checktime" property="checktime" jdbcType="TIMESTAMP" />
+    <result column="checkavltime" property="checkavltime" jdbcType="TIMESTAMP" />
+    <result column="jdjg" property="jdjg" jdbcType="VARCHAR" />
+    <result column="jdzsh" property="jdzsh" jdbcType="VARCHAR" />
+    <result column="file1" property="file1" jdbcType="VARCHAR" />
+    <result column="file2" property="file2" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="createip" property="createip" jdbcType="VARCHAR" />
+    <result column="overtime" property="overtime" jdbcType="TIMESTAMP" />
+    <result column="overip" property="overip" jdbcType="VARCHAR" />
+    <result column="shuliang" property="shuliang" jdbcType="INTEGER" />
+
+    <association property="equipmentname"  javaType="com.nomico.model.Equipmentname" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+   </association>
+   
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, equipmentnameid, ppxh, ccbh, state, remark, checktime, checkavltime, jdjg, jdzsh, 
+    file1, file2, createtime, createip, overtime, overip, shuliang
+  </sql>
+  <sql id="Base_Column_List2" >
+    a.id, a.equipmentnameid, a.ppxh, a.ccbh, a.state, a.remark, a.checktime, a.checkavltime, a.jdjg, a.jdzsh, 
+    a.file1, a.file2, a.createtime, a.createip, a.overtime, a.overip, a.shuliang,b.id,b.name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from equipment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+   <select id="selectAll" resultMap="BaseResultMap" parameterType="com..system.model.Equipment" >
+    select 
+    <include refid="Base_Column_List2" />
+    from equipment a,equipmentname b
+    <where>
+    a.equipmentnameid=b.id  and a.state in (1,2,3)
+    <if test="equipmentnameid != null and equipmentnameid !=''" >
+     and  a. equipmentnameid = #{equipmentnameid,jdbcType=VARCHAR}
+      </if>
+     <if test="ppxh != null and ppxh !=''" >
+      and   a.ppxh like  #{ppxh,jdbcType=VARCHAR}
+      </if>
+      <if test="ccbh != null and ccbh !=''" >
+      and  a.ccbh  like  #{ccbh,jdbcType=VARCHAR}
+      </if>
+      <if test="state != null " >
+      and  a.state = #{state,jdbcType=INTEGER}
+      </if>
+    </where>
+    order by a.createtime desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from equipment
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nomico.model.Equipment" >
+    insert into equipment (id, equipmentnameid, ppxh, 
+      ccbh, state, remark, 
+      checktime, checkavltime, jdjg, 
+      jdzsh, file1, file2, 
+      createtime, createip, overtime, 
+      overip, shuliang)
+    values (#{id,jdbcType=VARCHAR}, #{equipmentnameid,jdbcType=VARCHAR}, #{ppxh,jdbcType=VARCHAR}, 
+      #{ccbh,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{checktime,jdbcType=TIMESTAMP}, #{checkavltime,jdbcType=TIMESTAMP}, #{jdjg,jdbcType=VARCHAR}, 
+      #{jdzsh,jdbcType=VARCHAR}, #{file1,jdbcType=VARCHAR}, #{file2,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{createip,jdbcType=VARCHAR}, #{overtime,jdbcType=TIMESTAMP}, 
+      #{overip,jdbcType=VARCHAR}, #{shuliang,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nomico.model.Equipment" >
+    insert into equipment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="equipmentnameid != null" >
+        equipmentnameid,
+      </if>
+      <if test="ppxh != null" >
+        ppxh,
+      </if>
+      <if test="ccbh != null" >
+        ccbh,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="checktime != null" >
+        checktime,
+      </if>
+      <if test="checkavltime != null" >
+        checkavltime,
+      </if>
+      <if test="jdjg != null" >
+        jdjg,
+      </if>
+      <if test="jdzsh != null" >
+        jdzsh,
+      </if>
+      <if test="file1 != null" >
+        file1,
+      </if>
+      <if test="file2 != null" >
+        file2,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="createip != null" >
+        createip,
+      </if>
+      <if test="overtime != null" >
+        overtime,
+      </if>
+      <if test="overip != null" >
+        overip,
+      </if>
+      <if test="shuliang != null" >
+        shuliang,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentnameid != null" >
+        #{equipmentnameid,jdbcType=VARCHAR},
+      </if>
+      <if test="ppxh != null" >
+        #{ppxh,jdbcType=VARCHAR},
+      </if>
+      <if test="ccbh != null" >
+        #{ccbh,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checktime != null" >
+        #{checktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkavltime != null" >
+        #{checkavltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jdjg != null" >
+        #{jdjg,jdbcType=VARCHAR},
+      </if>
+      <if test="jdzsh != null" >
+        #{jdzsh,jdbcType=VARCHAR},
+      </if>
+      <if test="file1 != null" >
+        #{file1,jdbcType=VARCHAR},
+      </if>
+      <if test="file2 != null" >
+        #{file2,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createip != null" >
+        #{createip,jdbcType=VARCHAR},
+      </if>
+      <if test="overtime != null" >
+        #{overtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overip != null" >
+        #{overip,jdbcType=VARCHAR},
+      </if>
+      <if test="shuliang != null" >
+        #{shuliang,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nomico.model.Equipment" >
+    update equipment
+    <set >
+      <if test="equipmentnameid != null" >
+        equipmentnameid = #{equipmentnameid,jdbcType=VARCHAR},
+      </if>
+      <if test="ppxh != null" >
+        ppxh = #{ppxh,jdbcType=VARCHAR},
+      </if>
+      <if test="ccbh != null" >
+        ccbh = #{ccbh,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checktime != null" >
+        checktime = #{checktime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkavltime != null" >
+        checkavltime = #{checkavltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jdjg != null" >
+        jdjg = #{jdjg,jdbcType=VARCHAR},
+      </if>
+      <if test="jdzsh != null" >
+        jdzsh = #{jdzsh,jdbcType=VARCHAR},
+      </if>
+      <if test="file1 != null" >
+        file1 = #{file1,jdbcType=VARCHAR},
+      </if>
+      <if test="file2 != null" >
+        file2 = #{file2,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createip != null" >
+        createip = #{createip,jdbcType=VARCHAR},
+      </if>
+      <if test="overtime != null" >
+        overtime = #{overtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overip != null" >
+        overip = #{overip,jdbcType=VARCHAR},
+      </if>
+      <if test="shuliang != null" >
+        shuliang = #{shuliang,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nomico.model.Equipment" >
+    update equipment
+    set equipmentnameid = #{equipmentnameid,jdbcType=VARCHAR},
+      ppxh = #{ppxh,jdbcType=VARCHAR},
+      ccbh = #{ccbh,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      checktime = #{checktime,jdbcType=TIMESTAMP},
+      checkavltime = #{checkavltime,jdbcType=TIMESTAMP},
+      jdjg = #{jdjg,jdbcType=VARCHAR},
+      jdzsh = #{jdzsh,jdbcType=VARCHAR},
+      file1 = #{file1,jdbcType=VARCHAR},
+      file2 = #{file2,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      createip = #{createip,jdbcType=VARCHAR},
+      overtime = #{overtime,jdbcType=TIMESTAMP},
+      overip = #{overip,jdbcType=VARCHAR},
+      shuliang = #{shuliang,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

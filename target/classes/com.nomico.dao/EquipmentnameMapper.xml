@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nomico.dao.EquipmentnameMapper" >
+  <resultMap id="BaseResultMap" type="com.nomico.model.Equipmentname" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="createip" property="createip" jdbcType="VARCHAR" />
+    <result column="overtime" property="overtime" jdbcType="TIMESTAMP" />
+    <result column="overip" property="overip" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+       <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, createtime, createip, overtime, overip, state, userid,remark
+  </sql>
+   <select id="selectAll" resultMap="BaseResultMap"  parameterType="com.nomico.model.Equipmentname" >
+    select 
+    <include refid="Base_Column_List" />
+    from equipmentname
+    where state=1
+    <if test="name != null and name !=''" >
+      and   name like #{name,jdbcType=VARCHAR}
+   </if>
+    order by createtime desc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from equipmentname
+    where id = #{id,jdbcType=VARCHAR} and state=1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from equipmentname
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.nomico.model.Equipmentname" >
+    insert into equipmentname (id, name, createtime, 
+      createip, overtime, overip, 
+      state, userid,remark)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{createip,jdbcType=VARCHAR}, #{overtime,jdbcType=TIMESTAMP}, #{overip,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nomico.model.Equipmentname" >
+    insert into equipmentname
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="createip != null" >
+        createip,
+      </if>
+      <if test="overtime != null" >
+        overtime,
+      </if>
+      <if test="overip != null" >
+        overip,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+         <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createip != null" >
+        #{createip,jdbcType=VARCHAR},
+      </if>
+      <if test="overtime != null" >
+        #{overtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overip != null" >
+        #{overip,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+       <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nomico.model.Equipmentname" >
+    update equipmentname
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createip != null" >
+        createip = #{createip,jdbcType=VARCHAR},
+      </if>
+      <if test="overtime != null" >
+        overtime = #{overtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="overip != null" >
+        overip = #{overip,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+        <if test="remark != null" >
+       remark= #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nomico.model.Equipmentname" >
+    update equipmentname
+    set name = #{name,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      createip = #{createip,jdbcType=VARCHAR},
+      overtime = #{overtime,jdbcType=TIMESTAMP},
+      overip = #{overip,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=VARCHAR},
+      remark=#{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

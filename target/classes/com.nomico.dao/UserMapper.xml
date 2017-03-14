@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nomico.dao.UserMapper" >
+<cache  size="1024000" readOnly="false" eviction="FIFO" />
+  <resultMap id="BaseResultMap" type="com.nomico.model.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="truename" property="truename" jdbcType="VARCHAR" />
+    <result column="rolename" property="rolename" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="overip" property="overip" jdbcType="VARCHAR" />
+    <result column="createip" property="createip" jdbcType="VARCHAR" />
+    <result column="a3" property="a3" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="b2" property="b2" jdbcType="INTEGER" />
+    <result column="overtime" property="overtime" jdbcType="TIMESTAMP" />
+     <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+
+
+   <association property="department"  javaType="com.nomico.model.Department" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="deptname" property="deptname" jdbcType="VARCHAR" />
+   </association>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, username, password, truename, rolename, deptid, overip, createip, a3, state, b2, overtime,createtime
+  </sql>
+    <sql id="Base_Column_List2" >
+    a.id, a.username, a.password, a.truename, a.rolename, a.deptid, a.overip, a.createip, a.a3, a.state, a.b2,a.createtime, a.overtime,b.id,b.deptname
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List2" />
+    from user a ,department b
+    where  a.deptid=b.id and  a.id = #{id,jdbcType=VARCHAR} and a.state=1
+  </select>
+
+   <select id="selectAll" resultMap="BaseResultMap" parameterType="com.nomico.model.User" useCache="false">
+    select 
+    <include refid="Base_Column_List2" />
+    from user a ,department b where  a.deptid=b.id and a.state=1    
+     <if test="username != null and username !=''" >
+          and  username  like #{username,jdbcType=VARCHAR}
+      </if>
+      order by createtime desc
+    </select>
+
+   <select id="selectByPramater" resultMap="BaseResultMap" parameterType="com.nomico.model.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where username=#{username,jdbcType=VARCHAR} and password=#{password,jdbcType=VARCHAR} and state=1
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.nomico.model.User" >
+    insert into user (id, username, password, 
+      truename, rolename, deptid, 
+      overip, createip, a3, state, 
+      b2, overtime,createtime)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{truename,jdbcType=VARCHAR}, #{rolename,jdbcType=VARCHAR}, #{deptid,jdbcType=VARCHAR}, 
+      #{overip,jdbcType=VARCHAR}, #{createip,jdbcType=VARCHAR}, #{a3,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{b2,jdbcType=INTEGER}, #{overtime,jdbcType=TIMESTAMP},#{createtime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.nomico.model.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="truename != null" >
+        truename,
+      </if>
+      <if test="rolename != null" >
+        rolename,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="overip != null" >
+        overip,
+      </if>
+      <if test="createip != null" >
+        createip,
+      </if>
+      <if test="a3 != null" >
+        a3,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="b2 != null" >
+        b2,
+      </if>
+      <if test="overtime != null" >
+        overtime,
+      </if>
+       <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null" >
+        #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null" >
+        #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="overip != null" >
+        #{overip,jdbcType=VARCHAR},
+      </if>
+      <if test="createip != null" >
+        #{createip,jdbcType=VARCHAR},
+      </if>
+      <if test="a3 != null" >
+        #{a3,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="b2 != null" >
+        #{b2,jdbcType=INTEGER},
+      </if>
+      <if test="overtime != null" >
+        #{overtime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.nomico.model.User" >
+    update user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="truename != null" >
+        truename = #{truename,jdbcType=VARCHAR},
+      </if>
+      <if test="rolename != null" >
+        rolename = #{rolename,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="overip != null" >
+        overip = #{overip,jdbcType=VARCHAR},
+      </if>
+      <if test="createip != null" >
+        createip = #{createip,jdbcType=VARCHAR},
+      </if>
+      <if test="a3 != null" >
+        a3 = #{a3,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="b2 != null" >
+        b2 = #{b2,jdbcType=INTEGER},
+      </if>
+      <if test="overtime != null" >
+        overtime = #{overtime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="createtime != null" >
+        createtime=#{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.nomico.model.User" >
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      truename = #{truename,jdbcType=VARCHAR},
+      rolename = #{rolename,jdbcType=VARCHAR},
+      deptid = #{deptid,jdbcType=VARCHAR},
+      overip = #{overip,jdbcType=VARCHAR},
+      createip = #{createip,jdbcType=VARCHAR},
+      a3 = #{a3,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      b2 = #{b2,jdbcType=INTEGER},
+      overtime = #{overtime,jdbcType=TIMESTAMP},
+      createtime=#{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
